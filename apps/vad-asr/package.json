@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/moeru-ai/airi.git",
+    "url": "https://github.com/proj-airi/webai-realtime-voice-chat.git",
     "directory": "apps/vad-asr"
   },
   "scripts": {
