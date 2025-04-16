@@ -28,6 +28,7 @@
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@iconify-json/simple-icons": "^1.2.32",
     "@iconify-json/solar": "^1.2.2",
     "@iconify-json/svg-spinners": "^1.2.2",
     "@types/audioworklet": "^0.0.72",

@@ -115,6 +115,9 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.32
+        version: 1.2.32
       '@iconify-json/solar':
         specifier: ^1.2.2
         version: 1.2.2
@@ -164,6 +167,9 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.32
+        version: 1.2.32
       '@iconify-json/solar':
         specifier: ^1.2.2
         version: 1.2.2
@@ -225,6 +231,9 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.32
+        version: 1.2.32
       '@iconify-json/solar':
         specifier: ^1.2.2
         version: 1.2.2
@@ -289,6 +298,9 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.32
+        version: 1.2.32
       '@iconify-json/solar':
         specifier: ^1.2.2
         version: 1.2.2
@@ -879,6 +891,9 @@ packages:
   '@humanwhocodes/retry@0.4.2':
     resolution: {integrity: sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/simple-icons@1.2.32':
+    resolution: {integrity: sha512-gxgLq0raip7SJaeJ0302vwhsqupQttS21B93Ci1kA/++B+hIgGw71HzTOWQoUhwjlrdWcoVUxSvpPJoMs7oURg==}
 
   '@iconify-json/solar@1.2.2':
     resolution: {integrity: sha512-lcTb6DWL4HZObiY1W3fHfuxxuQHUc6CFHFeywKEx7Ry0k+dU6POZCMC7oVLr0F8vuf+KgaQ3oOoGO/yFzOwrNg==}
@@ -4337,6 +4352,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.2': {}
+
+  '@iconify-json/simple-icons@1.2.32':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/solar@1.2.2':
     dependencies:
