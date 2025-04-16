@@ -28,8 +28,8 @@ const llmInputSpeechEvent = workflowEvent<{ buffer: Float32Array<ArrayBufferLike
 const llmTranscriptionEvent = workflowEvent<string, 'transcription'>()
 const llmChatCompletionsTokenEvent = workflowEvent<string, 'chat-completions-token'>()
 const llmChatCompletionsEndedEvent = workflowEvent<string, 'chat-completions-ended'>()
-const llmSentenceReadyEvent = workflowEvent<string, 'sentence-ready'>()
-const llmTTSOutputEvent = workflowEvent<AudioBuffer, 'tts-output'>()
+const llmSentenceReadyEvent = workflowEvent<{ text: string, index: number }, 'sentence-ready'>()
+const llmTTSOutputEvent = workflowEvent<{ buffer: AudioBuffer, index: number }, 'tts-output'>()
 
 const llmProviderBaseURL = useLocalStorage('llmProviderBaseURL', 'https://openrouter.ai/api/v1/')
 const llmProviderAPIKey = useLocalStorage('llmProviderAPIKey', '')
@@ -68,6 +68,9 @@ const messages = ref<Message[]>([
 const streamingMessage = ref<Message>({ role: 'assistant', content: '' })
 const ttsSentenceBuffer = ref('')
 const audioPlaybackQueue = ref<AudioBuffer[]>([])
+const pendingAudioBuffers = ref<Map<number, AudioBuffer>>(new Map())
+const nextExpectedAudioIndex = ref(0)
+const sentenceCounter = ref(0)
 const isPlayingAudio = ref(false)
 
 const llmWorkflow = createWorkflow()
@@ -198,7 +201,8 @@ llmWorkflow.handle([llmChatCompletionsTokenEvent], async (event) => {
     ttsSentenceBuffer.value = ttsSentenceBuffer.value.substring(markerIndex + breakMarker.length)
 
     if (sentenceText) {
-      context.sendEvent(llmSentenceReadyEvent.with(sentenceText))
+      context.sendEvent(llmSentenceReadyEvent.with({ text: sentenceText, index: sentenceCounter.value }))
+      sentenceCounter.value++
     }
   }
 })
@@ -212,24 +216,26 @@ llmWorkflow.handle([llmChatCompletionsEndedEvent], async (event) => {
   }
 
   if (remainingText) {
-    context.sendEvent(llmSentenceReadyEvent.with(remainingText))
+    context.sendEvent(llmSentenceReadyEvent.with({ text: remainingText, index: sentenceCounter.value }))
+    sentenceCounter.value++
   }
   ttsSentenceBuffer.value = ''
 })
 
 llmWorkflow.handle([llmSentenceReadyEvent], async (event) => {
   const context = getContext()
+  const { text, index } = event.data
   try {
     const res = await generateSpeech({
       baseURL: ttsProviderBaseURL.value,
       apiKey: ttsProviderAPIKey.value,
       model: ttsProviderModel.value,
       voice: ttsProviderVoice.value,
-      input: event.data,
+      input: text,
     })
 
     const audioBuffer = await audioContext.value!.decodeAudioData(res)
-    context.sendEvent(llmTTSOutputEvent.with(audioBuffer))
+    context.sendEvent(llmTTSOutputEvent.with({ buffer: audioBuffer, index }))
   }
   catch (err) {
     console.error('Failed to generate or decode speech:', err)
@@ -238,9 +244,22 @@ llmWorkflow.handle([llmSentenceReadyEvent], async (event) => {
 })
 
 llmWorkflow.handle([llmTTSOutputEvent], (event): Promise<void> => {
-  audioPlaybackQueue.value.push(event.data)
-  playNextAudio()
-  return Promise.resolve() // Handler completes immediately after queuing
+  const { buffer, index } = event.data
+
+  // Store the received buffer
+  pendingAudioBuffers.value.set(index, buffer)
+
+  // Check if we can enqueue buffers in order
+  while (pendingAudioBuffers.value.has(nextExpectedAudioIndex.value)) {
+    const bufferToPlay = pendingAudioBuffers.value.get(nextExpectedAudioIndex.value)!
+    pendingAudioBuffers.value.delete(nextExpectedAudioIndex.value)
+    audioPlaybackQueue.value.push(bufferToPlay)
+    nextExpectedAudioIndex.value++
+  }
+
+  // Start playback if not already playing and queue has items
+  playNextAudio() // Checks internally if already playing
+  return Promise.resolve() // Handler completes immediately after queuing logic
 })
 
 async function setupSpeechDetection() {
@@ -303,6 +322,12 @@ async function setupSpeechDetection() {
 async function destroySpeechDetection() {
   await audioManager.value?.stop()
   await audioManager.value?.dispose()
+  sentenceCounter.value = 0
+  nextExpectedAudioIndex.value = 0
+  pendingAudioBuffers.value.clear()
+  audioPlaybackQueue.value = []
+  isPlayingAudio.value = false // Ensure playback stops
+
   isInitialized.value = false
   isRunning.value = false
   isSpeechDetected.value = false
