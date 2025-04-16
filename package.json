@@ -1,0 +1,74 @@
+{
+  "name": "@proj-airi/webai-realtime-voice-chat",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.7.1",
+  "description": "LLM powered virtual character",
+  "author": {
+    "name": "Project AIRI Team",
+    "email": "airi-team@moeru.ai",
+    "url": "https://github.com/proj-airi"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/proj-airi/webai-realtime-voice-chat.git"
+  },
+  "scripts": {
+    "postinstall": "npx simple-git-hooks",
+    "dev": "pnpm -rF=\"./packages/*\" -F=\"./apps/*\" run --parallel dev",
+    "build": "pnpm -rF=\"./packages/*\" -F=\"./apps/*\" run build",
+    "test": "vitest --coverage",
+    "test:run": "vitest run",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
+    "typecheck": "pnpm -rF=\"./packages/*\" -F=\"./apps/*\" -F run --parallel typecheck",
+    "sizecheck": "npx vite-bundle-visualizer",
+    "up": "taze major -I",
+    "nolyfill": "pnpm dlx nolyfill"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.11.0",
+    "@antfu/ni": "^24.3.0",
+    "@cspell/dict-ru_ru": "^2.2.4",
+    "@types/node": "^22.14.0",
+    "@unocss/eslint-config": "^66.1.0-beta.10",
+    "@unocss/eslint-plugin": "^66.1.0-beta.10",
+    "@vitest/coverage-v8": "3.0.5",
+    "eslint": "^9.24.0",
+    "eslint-plugin-cypress": "^4.2.0",
+    "eslint-plugin-format": "^1.0.1",
+    "lint-staged": "^15.5.0",
+    "rollup": "^4.39.0",
+    "simple-git-hooks": "^2.12.1",
+    "taze": "^19.0.4",
+    "typescript": "~5.8.3",
+    "unbuild": "3.0.0-rc.11",
+    "unocss": "^66.1.0-beta.10",
+    "vite": "^6.2.5",
+    "vite-plugin-inspect": "^11.0.0",
+    "vitest": "^3.1.1"
+  },
+  "workspaces": [
+    "apps/**"
+  ],
+  "pnpm": {
+    "neverBuiltDependencies": [],
+    "overrides": {
+      "array-flatten": "npm:@nolyfill/array-flatten@^1.0.44",
+      "axios": "npm:feaxios@^0.0.23",
+      "is-core-module": "npm:@nolyfill/is-core-module@^1.0.39",
+      "isarray": "npm:@nolyfill/isarray@^1.0.44",
+      "safe-buffer": "npm:@nolyfill/safe-buffer@^1.0.44",
+      "safer-buffer": "npm:@nolyfill/safer-buffer@^1.0.44",
+      "side-channel": "npm:@nolyfill/side-channel@^1.0.44",
+      "string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1.0.44"
+    }
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}
