@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  voiceapi:
+    build: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./models:/app/models
+    environment:
+      - TZ=Asia/Shanghai
+
+volumes:
+  models:
+    driver: local
