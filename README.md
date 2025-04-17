@@ -4,11 +4,11 @@
 >
 > If you don't know what [Project AIRI](https://github.com/moeru-ai/airi) is, here's the introduction:
 >
-> [Project AIRI](https://github.com/moeru-ai/airi) aimed to build the ultimate virtual AI lives within the cyber spaces, we are currently targeting to re-create Neuro-sama.
+> [Project AIRI](https://github.com/moeru-ai/airi) aimed to build the ultimate virtual AI lives within the cyber spaces, we are currently targeting to re-create [Neuro-sama](https://www.youtube.com/@Neurosama).
 >
 > Funding? Startup?
 >
-> Currently, we have several parnership projects with other companies to build similar products, but I (@nekomeowww) primarily self sponsored those most contributed members of both @proj-airi and @moeru-ai, for supporting their work. I'd love have a opportunity to work on this project in long term without worrying the funding. If you are, and indeed got interested in this project, please contact me.
+> Currently, we have several parnership projects with other companies to build similar products, but I ([@nekomeowww](https://github.com/nekomeowww)) primarily self sponsored those most contributed members of both [@proj-airi](https://github.com/proj-airi) and [@moeru-ai](https://github.com/moeru-ai), for supporting their work. I'd love have a opportunity to work on this project in long term without worrying the funding. If you are, and indeed got interested in this project, please contact me.
 >
 > Who are we?
 >
