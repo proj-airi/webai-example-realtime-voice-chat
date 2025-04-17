@@ -39,7 +39,9 @@ words:
   - cubismmotionqueuemanager
   - cubismusermodel
   - cubismviewmatrix
+  - cuda
   - culori
+  - cupti
   - cuteen
   - deepseek
   - defu
@@ -55,6 +57,7 @@ words:
   - DuckDBWASMQuery
   - elevenlabs
   - Factorio
+  - fastapi
   - feaxios
   - formkit
   - giteeai
@@ -107,9 +110,12 @@ words:
   - nolyfill
   - nomic
   - novita
+  - numpy
   - nuxi
   - nuxt
   - nuxtjs
+  - nvcc
+  - nvtx
   - ofetch
   - oklch
   - ollama
@@ -131,12 +137,15 @@ words:
   - pretrained
   - prismarine
   - pthread
+  - pydantic
+  - pypi
   - qwen
   - rehype
   - rushstack
   - Saccade
   - saccades
   - SAVEPOINT
+  - scipy
   - sensenova
   - Shadcn
   - shiki
@@ -146,6 +155,7 @@ words:
   - sizecheck
   - smallserial
   - Sniglet
+  - soundfile
   - ssml
   - stepfun
   - supergroup
@@ -158,6 +168,7 @@ words:
   - unhead
   - unocss
   - unplugin
+  - uvicorn
   - valibot
   - vaul
   - velin

@@ -1,16 +1,21 @@
-FROM ubuntu:22.04
+FROM ghcr.io/prefix-dev/pixi:latest AS build
 
-RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
-RUN apt-get update -y && apt-get install -y python3 python3-pip libasound2
-RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/web/simple
-RUN pip3 install sherpa-onnx==1.10.27 -f https://k2-fsa.github.io/sherpa/onnx/cpu-cn.html
+RUN apt update -y && \
+    apt install -y libasound2t64 libsndfile-dev ca-certificates curl
 
 WORKDIR /app
-ADD requirements.txt /app/
-RUN pip3 install -r requirements.txt
 
 # Create models directory
 RUN mkdir -p /app/models
 
 ADD . /app/
-ENTRYPOINT ["python3", "app.py"]
+
+RUN --mount=type=cache,target=/root/.cache/rattler/cache,sharing=private pixi install --environment default
+RUN pixi shell-hook -s bash > /shell-hook
+RUN echo "#!/bin/bash" > /app/entrypoint.sh
+RUN cat /shell-hook >> /app/entrypoint.sh
+RUN echo 'exec "$@"' >> /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT [ "/app/entrypoint.sh" ]
+CMD ["python", "app.py"]

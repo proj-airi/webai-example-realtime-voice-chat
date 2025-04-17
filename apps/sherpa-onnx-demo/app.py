@@ -1,6 +1,6 @@
 from typing import *
-from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect, Query
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, Query
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 import asyncio
 import logging
@@ -187,7 +187,7 @@ if __name__ == "__main__":
             "vits-melo-tts-zh_en does not support CUDA fallback to CPU")
         args.tts_provider = 'cpu'
 
-    app.mount("/", app=StaticFiles(directory="./assets", html=True), name="assets")
+    app.mount("/", app=StaticFiles(directory="./demo/dist", html=True), name="demo/dist")
 
     logging.basicConfig(format='%(levelname)s: %(asctime)s %(name)s:%(lineno)s %(message)s',
                         level=logging.INFO)
