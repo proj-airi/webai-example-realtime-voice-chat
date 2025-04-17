@@ -1,10 +1,10 @@
-<h1 align="center">Project AIRI Web AI Realtime Voice Chat Demo</h1>
+# [Project AIRI](https://github.com/moeru-ai/airi) Web AI Realtime Voice Chat Demo
 
 > [!NOTE]
 >
-> If you don't know what Project AIRI is, here's the introduction:
+> If you don't know what [Project AIRI](https://github.com/moeru-ai/airi) is, here's the introduction:
 >
-> Project AIRI aimed to build the ultimate virtual AI lives within the cyber spaces, we are currently targeting to re-create Neuro-sama.
+> [Project AIRI](https://github.com/moeru-ai/airi) aimed to build the ultimate virtual AI lives within the cyber spaces, we are currently targeting to re-create Neuro-sama.
 >
 > Funding? Startup?
 >
@@ -24,7 +24,7 @@ pnpm i
 pnpm -F @proj-airi/vad-asr-chat dev
 ```
 
-## Other side projects born from Project Airi
+## Other side projects born from [Project AIRI](https://github.com/moeru-ai/airi)
 
 - [`unspeech`](https://github.com/moeru-ai/unspeech): Universal endpoint proxy server for `/audio/transcriptions` and `/audio/speech`, like LiteLLM but for any ASR and TTS
 - [`hfup`](https://github.com/moeru-ai/airi/tree/main/packages/hfup): tools to help on deploying, bundling to HuggingFace Spaces
