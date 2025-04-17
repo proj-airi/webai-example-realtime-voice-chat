@@ -183,6 +183,53 @@ def create_paraformer_en(samplerate: int, args) -> sherpa_onnx.OnlineRecognizer:
     return recognizer
 
 
+def create_whisper(samplerate: int, args) -> sherpa_onnx.OfflineRecognizer:
+    # Assuming model name like 'whisper-tiny.en', 'whisper-medium', etc.
+    # and a directory structure like 'sherpa-onnx-whisper-tiny.en'
+    model_dir_name = f'sherpa-onnx-{args.asr_model}'
+    d = os.path.join(args.models_root, model_dir_name)
+    if not os.path.exists(d):
+        raise ValueError(f"asr: model not found {d}")
+
+    # Extract the base model name (e.g., 'medium.en', 'tiny')
+    base_model_name = args.asr_model.replace('whisper-', '', 1)
+
+    # Construct filenames using the base name
+    # TODO: Decide whether to use int8 quantized models if available.
+    #       This example prioritizes non-quantized models first.
+    encoder_path = os.path.join(d, f'{base_model_name}-encoder.onnx')
+    decoder_path = os.path.join(d, f'{base_model_name}-decoder.onnx')
+    tokens_path = os.path.join(d, f'{base_model_name}-tokens.txt')  # Adjusted tokens filename too
+
+    # Fallback to int8 models if non-quantized don't exist
+    if not os.path.exists(encoder_path):
+        encoder_path = os.path.join(d, f'{base_model_name}-encoder.int8.onnx')
+    if not os.path.exists(decoder_path):
+        decoder_path = os.path.join(d, f'{base_model_name}-decoder.int8.onnx')
+
+    # Check if model files exist after potential fallback
+    if not os.path.exists(encoder_path):
+        raise ValueError(f"asr: encoder model not found at {encoder_path}")
+    if not os.path.exists(decoder_path):
+        raise ValueError(f"asr: decoder model not found at {decoder_path}")
+    if not os.path.exists(tokens_path):
+        raise ValueError(f"asr: tokens file not found at {tokens_path}")
+
+    # Assuming a factory function like this exists in sherpa-onnx
+    # --- IMPORTANT: Verify this factory function and parameters ---
+    recognizer = sherpa_onnx.OfflineRecognizer.from_whisper(
+        encoder=encoder_path,
+        decoder=decoder_path,
+        tokens=tokens_path,
+        num_threads=args.threads,
+        language=args.asr_lang or "",  # Whisper might need language hint
+        task="transcribe",  # or "translate"
+        debug=0,
+        provider=args.asr_provider,
+    )
+    return recognizer
+
+
 def load_asr_engine(samplerate: int, args) -> sherpa_onnx.OnlineRecognizer:
     cache_engine = _asr_engines.get(args.asr_model)
     if cache_engine:
@@ -199,6 +246,9 @@ def load_asr_engine(samplerate: int, args) -> sherpa_onnx.OnlineRecognizer:
     elif args.asr_model == 'paraformer-en':
         cache_engine = create_paraformer_en(samplerate, args)
         _asr_engines['vad'] = load_vad_engine(samplerate, args)
+    elif args.asr_model.startswith('whisper-'):
+        cache_engine = create_whisper(samplerate, args)
+        _asr_engines['vad'] = load_vad_engine(samplerate, args)  # Use VAD for offline processing
     else:
         raise ValueError(f"asr: unknown model {args.asr_model}")
     _asr_engines[args.asr_model] = cache_engine

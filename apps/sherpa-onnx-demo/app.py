@@ -1,20 +1,27 @@
 from typing import *
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, Query
 from fastapi.responses import StreamingResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import logging
 from pydantic import BaseModel, Field
 import uvicorn
 from voiceapi.tts import TTSResult, start_tts_stream, TTSStream
-from voiceapi.asr import start_asr_stream, ASRStream, ASRResult
+from voiceapi.asr import start_asr_stream, ASRResult
 import logging
 import argparse
 import os
 
 app = FastAPI()
-logger = logging.getLogger(__file__)
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=["*"],
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
+)
 
+logger = logging.getLogger(__file__)
 
 @app.websocket("/asr")
 async def websocket_asr(websocket: WebSocket,
@@ -22,7 +29,7 @@ async def websocket_asr(websocket: WebSocket,
                                                 description="The sample rate of the audio."),):
     await websocket.accept()
 
-    asr_stream: ASRStream = await start_asr_stream(samplerate, args)
+    asr_stream = await start_asr_stream(samplerate, args)
     if not asr_stream:
         logger.error("failed to start ASR stream")
         await websocket.close()
@@ -71,7 +78,7 @@ async def websocket_tts(websocket: WebSocket,
                                             description="Split the text into sentences.")):
 
     await websocket.accept()
-    tts_stream: TTSStream = None
+    tts_stream: TTSStream | None = None
 
     async def task_recv_text():
         nonlocal tts_stream
@@ -172,7 +179,7 @@ if __name__ == "__main__":
                         help="model root directory")
 
     parser.add_argument("--asr-model", type=str, default='sensevoice',
-                        help="ASR model name: zipformer-bilingual, sensevoice, paraformer-trilingual, paraformer-en")
+                        help="ASR model name: zipformer-bilingual, sensevoice, paraformer-trilingual, paraformer-en, whisper-medium")
 
     parser.add_argument("--asr-lang", type=str, default='zh',
                         help="ASR language, zh, en, ja, ko, yue")
@@ -186,8 +193,6 @@ if __name__ == "__main__":
         logger.warning(
             "vits-melo-tts-zh_en does not support CUDA fallback to CPU")
         args.tts_provider = 'cpu'
-
-    app.mount("/", app=StaticFiles(directory="./demo/dist", html=True), name="demo/dist")
 
     logging.basicConfig(format='%(levelname)s: %(asctime)s %(name)s:%(lineno)s %(message)s',
                         level=logging.INFO)

@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 
 import { VADAudioManager } from '../libs/vad/manager'
-import workletUrl from '../libs/vad/process.worklet?url'
+import workletUrl from '../libs/vad/process.worklet?worker&url'
 import { createVAD } from '../libs/vad/vad'
 import { toWav } from '../libs/vad/wav'
+import Section from '../components/Section.vue'
 
 interface AudioSegment {
   buffer: Float32Array
@@ -127,8 +128,22 @@ function toggleListening() {
 </script>
 
 <template>
-  <div mb-6 h-full w-full flex flex-col gap-2>
-    <div w-full flex-1>
+  <div mb-6 mt-4 h-full w-full flex flex-col gap-2>
+    <div w-full flex flex-1 flex-col gap-2>
+      <Section title="Voice Segments" icon="i-solar:microphone-3-bold" :expand="false">
+        <ul v-if="segments?.length && segments.length > 0">
+          <li v-for="(segment, index) in segments" :key="index" class="segment" flex flex-col gap-2>
+            <div class="segment-info" grid="~ cols-[120px_1fr] gap-2">
+              <span text="neutral-400 dark:neutral-500">Duration</span>
+              <span font-mono>
+                {{ segment.duration.toFixed(2) }}s
+              </span>
+            </div>
+            <audio :src="segment.audioSrc" controls w-full />
+          </li>
+        </ul>
+      </Section>
+
       <div v-if="isModuleLoading" mt-20 flex items-center justify-center text-5xl>
         <div i-svg-spinners:3-dots-move />
       </div>
@@ -136,22 +151,10 @@ function toggleListening() {
       <div v-if="error" class="error">
         {{ error }}
       </div>
-
-      <div v-if="segments?.length && segments.length > 0" class="segments" w-full flex flex-col gap-2>
-        <h3>Voice Segments ({{ segments.length }})</h3>
-        <ul>
-          <li v-for="(segment, index) in segments" :key="index" class="segment" flex flex-col gap-2>
-            <div class="segment-info">
-              <span>Duration: {{ segment.duration.toFixed(2) }}s</span>
-            </div>
-            <audio :src="segment.audioSrc" controls w-full />
-          </li>
-        </ul>
-      </div>
     </div>
 
     <div w-full flex justify-center gap-4>
-      <button aspect-square size-15 flex items-center justify-center rounded-full text-2xl :class="[isRunning ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900' : 'bg-neutral-900 dark:bg-white/20 text-white dark:text-white', isInitialized ? 'opacity-100' : 'opacity-0']" :disabled="!isInitialized" @click="toggleListening">
+      <button aspect-square size-15 flex items-center justify-center rounded-full text-2xl :class="[isRunning ? 'bg-neutral-700 dark:bg-white text-white dark:text-neutral-900' : 'bg-neutral-900 dark:bg-white/20 text-white dark:text-white', isInitialized ? 'opacity-100' : 'opacity-0']" :disabled="!isInitialized" @click="toggleListening">
         <div i-solar:microphone-3-bold />
       </button>
       <button v-if="!isInitialized" bg="green-500 dark:green-500 hover:green-400 dark:hover:green-400 active:green-500 dark:active:green-500" transition="all duration-250 ease-in-out" aspect-square size-15 flex items-center justify-center rounded-full @click="setupSpeechDetection">

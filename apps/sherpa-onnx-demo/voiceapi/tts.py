@@ -211,6 +211,6 @@ class TTSStream:
         return output
 
 
-async def start_tts_stream(sid: int, sample_rate: int, speed: float, args) -> TTSStream:
+async def start_tts_stream(sid: int, sample_rate: int, speed: float, args) -> TTSStream | None:
     engine, original_sample_rate = get_tts_engine(args)
     return TTSStream(engine, sid, speed, sample_rate, original_sample_rate)
