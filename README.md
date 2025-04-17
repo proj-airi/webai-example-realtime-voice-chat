@@ -1,5 +1,19 @@
 <h1 align="center">Project AIRI Web AI Realtime Voice Chat Demo</h1>
 
+> [!NOTE]
+>
+> If you don't know what Project AIRI is, here's the introduction:
+>
+> Project AIRI aimed to build the ultimate virtual AI lives within the cyber spaces, we are currently targeting to re-create Neuro-sama.
+>
+> Funding? Startup?
+>
+> Currently, we have several parnership projects with other companies to build similar products, but I (@nekomeowww) primarily self sponsored those most contributed members of both @proj-airi and @moeru-ai, for supporting their work. I'd love have a opportunity to work on this project in long term without worrying the funding. If you are, and indeed got interested in this project, please contact me.
+>
+> Who are we?
+>
+> We are a group of currently non-funded talented people made up with computer scientists, experts in multi-modal fields, designers, product managers, and popular open source contributors who loves the goal of where we are heading now.
+
 ## Development
 
 ```shell
