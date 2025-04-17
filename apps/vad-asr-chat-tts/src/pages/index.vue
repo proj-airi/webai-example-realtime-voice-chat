@@ -39,7 +39,7 @@ const asrProviderBaseURL = useLocalStorage('asrProviderBaseURL', 'http://localho
 const asrProviderAPIKey = useLocalStorage('asrProviderAPIKey', '')
 const asrProviderModel = useLocalStorage('asrProviderModel', 'large-v3-turbo')
 
-const ttsProviderBaseURL = useLocalStorage('ttsProviderBaseURL', 'http://unspeech.ayaka.io/v1/')
+const ttsProviderBaseURL = useLocalStorage('ttsProviderBaseURL', 'https://unspeech.ayaka.io/v1/')
 const ttsProviderAPIKey = useLocalStorage('ttsProviderAPIKey', '')
 const ttsProviderModel = useLocalStorage('ttsProviderModel', '')
 const ttsProviderVoice = useLocalStorage('ttsProviderVoice', '')
