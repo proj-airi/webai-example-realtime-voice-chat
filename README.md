@@ -14,6 +14,13 @@
 >
 > We are a group of currently non-funded talented people made up with computer scientists, experts in multi-modal fields, designers, product managers, and popular open source contributors who loves the goal of where we are heading now.
 
+Demos:
+
+- [VAD](https://proj-airi-apps-vad.netlify.app)
+- [VAD + ASR](https://proj-airi-apps-vad-asr.netlify.app)
+- [VAD + ASR + LLM Chat](https://proj-airi-apps-vad-asr-chat.netlify.app)
+- [VAD + ASR + LLM Chat + TTS](https://proj-airi-apps-vad-asr-chat-tts.netlify.app)
+
 ## Development
 
 ```shell
