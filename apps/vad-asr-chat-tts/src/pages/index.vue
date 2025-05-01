@@ -2,19 +2,19 @@
 import type { Message } from '@xsai/shared-chat'
 
 import { createWorkflow, getContext, workflowEvent } from '@llama-flow/core'
-import { useLocalStorage, useElementBounding, useScroll } from '@vueuse/core'
+import { useElementBounding, useLocalStorage, useScroll } from '@vueuse/core'
+import { generateSpeech } from '@xsai/generate-speech'
 import { generateTranscription } from '@xsai/generate-transcription'
 import { streamText } from '@xsai/stream-text'
-import { ref, toRaw, onUnmounted, nextTick } from 'vue'
-import { generateSpeech } from '@xsai/generate-speech'
+import { nextTick, onUnmounted, ref, toRaw } from 'vue'
 
 import FieldInput from '../components/FieldInput.vue'
 import Section from '../components/Section.vue'
+import { useAudioContext } from '../composables/audio-context'
 import { VADAudioManager } from '../libs/vad/manager'
 import workletUrl from '../libs/vad/process.worklet?worker&url'
 import { createVAD } from '../libs/vad/vad'
 import { toWav } from '../libs/vad/wav'
-import { useAudioContext } from '../composables/audio-context'
 
 interface AudioSegment {
   buffer: Float32Array
@@ -57,12 +57,12 @@ const sending = ref(false)
 const messages = ref<Message[]>([
   {
     role: 'system',
-    content: '' +
-      'You are having a phone call with a user, the texts are all transcribed from '+
-      'the audio, it may not be accurate, if you cannot understand what user said, '+
-      'please ask them to repeat it.' +
-      'When responding, for every sentence, please put a <break/> marker for me to '+
-      'parse for you.',
+    content: ''
+      + 'You are having a phone call with a user, the texts are all transcribed from '
+      + 'the audio, it may not be accurate, if you cannot understand what user said, '
+      + 'please ask them to repeat it.'
+      + 'When responding, for every sentence, please put a <break/> marker for me to '
+      + 'parse for you.',
   },
 ])
 const streamingMessage = ref<Message>({ role: 'assistant', content: '' })
@@ -195,7 +195,7 @@ llmWorkflow.handle([llmChatCompletionsTokenEvent], async (event) => {
 
     const sentenceText = ttsSentenceBuffer.value.substring(0, markerIndex).trim()
     if (sentenceText) {
-      streamingMessage.value.content += sentenceText + ' '
+      streamingMessage.value.content += `${sentenceText} `
     }
 
     ttsSentenceBuffer.value = ttsSentenceBuffer.value.substring(markerIndex + breakMarker.length)
@@ -207,12 +207,12 @@ llmWorkflow.handle([llmChatCompletionsTokenEvent], async (event) => {
   }
 })
 
-llmWorkflow.handle([llmChatCompletionsEndedEvent], async (event) => {
+llmWorkflow.handle([llmChatCompletionsEndedEvent], async () => {
   const context = getContext()
   const remainingText = ttsSentenceBuffer.value.trim()
 
   if (remainingText) {
-    streamingMessage.value.content += remainingText + ' '
+    streamingMessage.value.content += `${remainingText} `
   }
 
   if (remainingText) {
@@ -398,7 +398,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div mb-6 pb-4 mt-4 h-full w-full flex flex-col gap-2>
+  <div mb-6 mt-4 h-full w-full flex flex-col gap-2 pb-4>
     <div w-full flex flex-1 flex-col gap-2>
       <Section title="Settings" icon="i-solar:settings-bold" :expand="!isInitialized">
         <div flex="~ col gap-4" max-h-70 overflow-y-scroll>
@@ -444,7 +444,7 @@ onUnmounted(() => {
         {{ error }}
       </div>
 
-      <div my-4 max-h-120 w-full flex flex-col gap-2 overflow-y-scroll ref="messagesContainerRef">
+      <div ref="messagesContainerRef" my-4 max-h-120 w-full flex flex-col gap-2 overflow-y-scroll>
         <template v-for="(message, index) in messages" :key="index">
           <div v-if="message.role === 'user'" class="w-fit rounded-lg bg-cyan-100 px-3 py-2 dark:bg-cyan-900">
             {{ message.content }}

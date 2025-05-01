@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
+import { ref } from 'vue'
 
-import { ASR } from '../libs/asr/asr'
-import workletUrl from '../libs/asr/audio_process?worker&url'
 import FieldInput from '../components/FieldInput.vue'
 import Section from '../components/Section.vue'
+import { ASR } from '../libs/asr/asr'
+import workletUrl from '../libs/asr/audio_process?worker&url'
 
 interface AudioSegment {
   buffer: Float32Array
