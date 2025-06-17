@@ -1,5 +1,5 @@
 {
-  "name": "@proj-airi/vad",
+  "name": "@proj-airi/sherpa-onnx-demo",
   "type": "module",
   "private": true,
   "description": "Voice Activity Detector",
@@ -21,21 +21,21 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@huggingface/transformers": "^3.5.1",
-    "@vueuse/core": "^13.1.0",
+    "@huggingface/transformers": "^3.5.2",
+    "@vueuse/core": "^13.3.0",
     "defu": "^6.1.4",
-    "es-toolkit": "^1.37.2",
-    "vue": "^3.5.13"
+    "es-toolkit": "^1.39.3",
+    "vue": "^3.5.16"
   },
   "devDependencies": {
     "@iconify-json/solar": "^1.2.2",
     "@iconify-json/svg-spinners": "^1.2.2",
-    "@types/audioworklet": "^0.0.75",
-    "@unocss/reset": "^66.1.1",
+    "@types/audioworklet": "^0.0.77",
+    "@unocss/reset": "^66.2.1",
     "@vitejs/plugin-vue": "^5.2.4",
     "unplugin-vue-router": "^0.12.0",
     "vite": "^6.3.5",
     "vue-router": "^4.5.1",
-    "vue-tsc": "^3.0.0-alpha.6"
+    "vue-tsc": "^3.0.0-beta.2"
   }
 }

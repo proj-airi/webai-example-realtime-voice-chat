@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config'
+import { importX } from 'eslint-plugin-import-x'
 
 export default await antfu(
   {
@@ -9,7 +10,10 @@ export default await antfu(
       '**/assets/live2d/models/**',
     ],
     rules: {
-      'import/order': [
+      'ts/ban-ts-comment': 'off',
+      'antfu/import-dedupe': 'error',
+      'style/padding-line-between-statements': 'error',
+      'import-x/order': [
         'error',
         {
           'groups': [
@@ -20,6 +24,9 @@ export default await antfu(
           'newlines-between': 'always',
         },
       ],
+    },
+    plugins: {
+      'import-x': importX,
     },
   },
 )
