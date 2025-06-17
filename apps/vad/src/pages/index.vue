@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { VADAudioManager } from '../libs/vad/manager'
-import workletUrl from '../libs/vad/process.worklet?url'
+import workletUrl from '../libs/vad/process.worklet?worker&url'
 import { createVAD } from '../libs/vad/vad'
 import { toWav } from '../libs/vad/wav'
 
