@@ -15,8 +15,8 @@ export interface ASREvents {
   status: { type: string, message: string }
 }
 
-export type ASREventCallback<K extends keyof ASREvents> =
-  (event: ASREvents[K]) => void
+export type ASREventCallback<K extends keyof ASREvents>
+  = (event: ASREvents[K]) => void
 
 /**
  * Automatic Speech Recognition processor

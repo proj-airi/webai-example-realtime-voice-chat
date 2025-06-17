@@ -1,5 +1,4 @@
 import antfu from '@antfu/eslint-config'
-import { importX } from 'eslint-plugin-import-x'
 
 export default await antfu(
   {
@@ -10,23 +9,28 @@ export default await antfu(
       '**/assets/live2d/models/**',
     ],
     rules: {
-      'ts/ban-ts-comment': 'off',
       'antfu/import-dedupe': 'error',
-      'style/padding-line-between-statements': 'error',
-      'import-x/order': [
+      'import/order': 'off',
+      'perfectionist/sort-imports': [
         'error',
         {
-          'groups': [
-            ['type'],
-            ['builtin', 'external'],
-            ['parent', 'sibling', 'index'],
+          groups: [
+            'type-builtin',
+            'type-import',
+            'value-builtin',
+            'value-external',
+            'type-internal',
+            ['type-parent', 'type-sibling', 'type-index'],
+            'value-internal',
+            ['value-parent', 'value-sibling', 'value-index'],
+            ['wildcard-value-parent', 'wildcard-value-sibling', 'wildcard-value-index'],
+            'side-effect',
+            'style',
           ],
-          'newlines-between': 'always',
+          newlinesBetween: 'always',
         },
       ],
-    },
-    plugins: {
-      'import-x': importX,
+      'style/padding-line-between-statements': 'error',
     },
   },
 )

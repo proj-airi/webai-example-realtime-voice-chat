@@ -33,8 +33,8 @@ export interface VADEvents {
   'debug': { message: string, data?: any }
 }
 
-export type VADEventCallback<K extends keyof VADEvents> =
-  (event: VADEvents[K]) => void
+export type VADEventCallback<K extends keyof VADEvents>
+  = (event: VADEvents[K]) => void
 
 /**
  * Voice Activity Detection processor
