@@ -25,6 +25,12 @@ pnpm i
 pnpm -F @proj-airi/vad-asr-chat dev
 ```
 
+## Other examples about AI / Model inference from Project AIRI
+
+- [WebAI Examples](https://github.com/proj-airi/webai-examples): WebGPU, and use of AI models inside Web Browsers (you could think of it as a type-safe and UI improved version of [🤗 Transformers.js' example repository](https://github.com/huggingface/transformers.js-examples))
+- [🤗 candle Examples](https://github.com/proj-airi/candle-examples): Examples of using [🤗 candle](https://github.com/huggingface/candle) for inference AI models in Rust, you could think of it as an alternative and more transformers like library than [Burn Examples (this repository)].
+- [Burn Examples](https://github.com/proj-airi/burn-examples): Examples of using [Burn.dev](https://burn.dev) for inference AI models in Rust, you could think of it as an alternative and more advanced library than [🤗 candle Examples].
+
 ## Other side projects born from [Project AIRI](https://github.com/moeru-ai/airi)
 
 - [Awesome AI VTuber](https://github.com/proj-airi/awesome-ai-vtuber): A curated list of AI VTubers and related projects
