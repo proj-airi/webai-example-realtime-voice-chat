@@ -4,7 +4,8 @@ channels = [ "conda-forge" ]
 name = "sherpa-onnx-demo"
 platforms = [
   "osx-arm64",
-  "linux-aarch64"
+  "linux-aarch64",
+  "linux-64"
 ]
 version = "0.1.0"
 
@@ -19,7 +20,7 @@ python = "3.12.*"
 pip = ">=25.0.1,<26"
 
 [pypi-dependencies]
-sherpa-onnx = "==1.11.3"
+sherpa-onnx = "==1.12.14"
 soundfile = "==0.12.1"
 scipy = "==1.13.1"
 numpy = "==1.26.4"
@@ -40,9 +41,13 @@ channels = [
   { channel = "pytorch", priority = -1 }
 ]
 
+[feature.cuda.pypi-options]
+index-url = "https://pypi.org/simple"
+find-links = [ { url = "https://k2-fsa.github.io/sherpa/onnx/cuda-cn.html" } ]
+
 [feature.cuda.pypi-dependencies]
 onnxruntime-gpu = "==1.19.2"
-sherpa-onnx = "==1.10.27+cuda"
+sherpa-onnx = "==1.12.14+cuda12.cudnn9"
 
 [feature.cuda.system-requirements]
 cuda = "12"
@@ -52,7 +57,8 @@ cuda-libraries-dev = "*"
 cuda-nvcc = "*"
 cuda-nvtx = "*"
 cuda-cupti = "*"
-cuda = "*"
+cuda = "12.*"
+cudnn = ">=9.0,<10"
 
 [environments]
 cuda = [ "cuda" ]
