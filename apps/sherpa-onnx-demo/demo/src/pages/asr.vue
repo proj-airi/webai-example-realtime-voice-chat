@@ -50,7 +50,7 @@ async function setupASR() {
     asrInstance.on('result', (result) => {
       segments.value.push({
         audioSrc: '',
-        buffer: [] as any,
+        buffer: new Float32Array(),
         duration: 0,
         timestamp: 0,
         transcription: result.text,
@@ -118,7 +118,10 @@ function toggleRecording() {
     <div w-full flex flex-1 flex-col gap-2>
       <Section title="Settings" icon="i-solar:settings-bold" :expand="!isInitialized">
         <div flex="~ col gap-4">
-          <FieldInput v-model="asrProviderBaseURL" label="ASR Provider Base URL" description="The base URL of the ASR provider. Generally, Speaches is recommended." />
+          <FieldInput
+            v-model="asrProviderBaseURL" label="ASR Provider Base URL"
+            description="The base URL of the ASR provider. Generally, Speaches is recommended."
+          />
         </div>
       </Section>
 
@@ -149,13 +152,26 @@ function toggleRecording() {
     </div>
 
     <div w-full flex justify-center gap-4>
-      <button aspect-square size-15 flex items-center justify-center rounded-full text-2xl :class="[isRunning ? 'bg-neutral-700 dark:bg-white text-white dark:text-neutral-900' : 'bg-neutral-900 dark:bg-white/20 text-white dark:text-white', isInitialized ? 'opacity-100' : 'opacity-0']" :disabled="!isInitialized" @click="toggleRecording">
+      <button
+        aspect-square size-15 flex items-center justify-center rounded-full text-2xl
+        :class="[isRunning ? 'bg-neutral-700 dark:bg-white text-white dark:text-neutral-900' : 'bg-neutral-900 dark:bg-white/20 text-white dark:text-white', isInitialized ? 'opacity-100' : 'opacity-0']"
+        :disabled="!isInitialized" @click="toggleRecording"
+      >
         <div i-solar:microphone-3-bold />
       </button>
-      <button v-if="!isInitialized" bg="green-500 dark:green-500 hover:green-400 dark:hover:green-400 active:green-500 dark:active:green-500" transition="all duration-250 ease-in-out" aspect-square size-15 flex items-center justify-center rounded-full @click="setupASR">
+      <button
+        v-if="!isInitialized"
+        bg="green-500 dark:green-500 hover:green-400 dark:hover:green-400 active:green-500 dark:active:green-500"
+        transition="all duration-250 ease-in-out" aspect-square size-15 flex items-center justify-center rounded-full
+        @click="setupASR"
+      >
         <div i-solar:phone-rounded-bold text-4xl text-white />
       </button>
-      <button v-else bg="red-500 dark:red-500 hover:red-400 dark:hover:red-400 active:red-500 dark:active:red-500" transition="all duration-250 ease-in-out" aspect-square size-15 flex items-center justify-center rounded-full text-4xl text-white @click="destroyASR">
+      <button
+        v-else bg="red-500 dark:red-500 hover:red-400 dark:hover:red-400 active:red-500 dark:active:red-500"
+        transition="all duration-250 ease-in-out" aspect-square size-15 flex items-center justify-center rounded-full
+        text-4xl text-white @click="destroyASR"
+      >
         <div i-solar:end-call-rounded-bold />
       </button>
     </div>
