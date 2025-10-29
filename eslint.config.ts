@@ -9,6 +9,7 @@ export default await antfu(
       '**/assets/live2d/models/**',
     ],
     rules: {
+      'ts/no-explicit-any': 'warn',
       'antfu/import-dedupe': 'error',
       'import/order': 'off',
       'perfectionist/sort-imports': [

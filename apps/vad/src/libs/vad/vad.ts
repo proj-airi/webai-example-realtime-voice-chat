@@ -1,3 +1,5 @@
+import type { PretrainedConfig, PreTrainedModel } from '@huggingface/transformers'
+
 import { AutoModel, Tensor } from '@huggingface/transformers'
 
 // Default configuration parameters
@@ -30,7 +32,7 @@ export interface VADEvents {
   // Emitted for status updates and errors
   'status': { type: string, message: string }
   // Debug info
-  'debug': { message: string, data?: any }
+  'debug': { message: string, data?: unknown }
 }
 
 export type VADEventCallback<K extends keyof VADEvents>
@@ -41,7 +43,7 @@ export type VADEventCallback<K extends keyof VADEvents>
  */
 export class VAD {
   private config: VADConfig
-  private model: any
+  private model: PreTrainedModel | null = null
   private state: Tensor
   private sampleRateTensor: Tensor
   private buffer: Float32Array
@@ -49,8 +51,8 @@ export class VAD {
   private isRecording: boolean = false
   private postSpeechSamples: number = 0
   private prevBuffers: Float32Array[] = []
-  private inferenceChain: Promise<any> = Promise.resolve()
-  private eventListeners: Partial<Record<keyof VADEvents, VADEventCallback<any>[]>> = {}
+  private inferenceChain: Promise<void> = Promise.resolve()
+  private eventListeners: Partial<Record<keyof VADEvents, VADEventCallback<keyof VADEvents>[]>> = {}
   private isReady: boolean = false
 
   constructor(userConfig: Partial<VADConfig> = {}) {
@@ -86,7 +88,7 @@ export class VAD {
       this.emit('status', { type: 'info', message: 'Loading VAD model...' })
 
       this.model = await AutoModel.from_pretrained('onnx-community/silero-vad', {
-        config: { model_type: 'custom' } as any,
+        config: { model_type: 'custom' } as PretrainedConfig,
         dtype: 'fp32', // Full-precision
       })
 
@@ -106,7 +108,7 @@ export class VAD {
     if (!this.eventListeners[event]) {
       this.eventListeners[event] = []
     }
-    this.eventListeners[event]!.push(callback as any)
+    this.eventListeners[event]!.push(callback as VADEventCallback<keyof VADEvents>)
   }
 
   /**
@@ -215,7 +217,7 @@ export class VAD {
     const input = new Tensor('float32', buffer, [1, buffer.length])
 
     const { stateN, output } = await (this.inferenceChain = this.inferenceChain.then(() =>
-      this.model({
+      this.model!({
         input,
         sr: this.sampleRateTensor,
         state: this.state,

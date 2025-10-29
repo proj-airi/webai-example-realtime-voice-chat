@@ -145,7 +145,7 @@ llmWorkflow.handle([llmChatCompletionsTokenEvent], async (event) => {
     streamingMessage.value.content = ''
   }
 
-  streamingMessage.value.content += event.data as any
+  streamingMessage.value.content += event.data
 })
 
 llmWorkflow.handle([llmChatCompletionsEndedEvent], async () => {

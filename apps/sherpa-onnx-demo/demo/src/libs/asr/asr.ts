@@ -28,7 +28,7 @@ export class ASR {
   private mediaStream: MediaStream | null = null
   private ws: WebSocket | null = null
   private isRecording: boolean = false
-  private eventListeners: Partial<Record<keyof ASREvents, ASREventCallback<any>[]>> = {}
+  private eventListeners: Partial<Record<keyof ASREvents, ASREventCallback<keyof ASREvents>[]>> = {}
 
   constructor(config: Partial<ASRConfig> = {}) {
     // Default configuration
@@ -48,7 +48,7 @@ export class ASR {
     if (!this.eventListeners[event]) {
       this.eventListeners[event] = []
     }
-    this.eventListeners[event]!.push(callback as any)
+    this.eventListeners[event]!.push(callback as ASREventCallback<keyof ASREvents>)
   }
 
   /**
