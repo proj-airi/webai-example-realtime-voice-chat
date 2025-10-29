@@ -16,14 +16,10 @@ Thanks to [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx), we can ea
 
 ## Run the app locally
 
-Python 3.10+ is required
+Python 3.10+ and [pixi](https://pixi.sh/latest/installation/) is required
 
 ```shell
-python3 -m venv venv
-. venv/bin/activate
-
-pip install -r requirements.txt
-python app.py
+pixi run start
 ```
 
 Visit `http://localhost:8000/` to see the demo page
@@ -136,7 +132,7 @@ curl -X POST "http://localhost:8000/tts" \
 All models are stored in the `models` directory
 Only download the models you need. default models are:
 
-- asr models: `sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20`(Bilingual, Chinese + English). Streaming
+- asr models: `sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17` (Multilingual). pseudo-streaming via truncated attention mechanism
 - tts models: `vits-zh-hf-theresa` (Chinese + English)
 
 ### vits-zh-hf-theresa
